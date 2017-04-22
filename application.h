@@ -5,6 +5,8 @@
 #include <QQmlApplicationEngine>
 #include <string>
 
+#include "parser.h"
+
 class Application : public QGuiApplication
 {
     Q_OBJECT
@@ -13,12 +15,11 @@ protected:
 
     QQmlApplicationEngine m_engine;
     
-    QString m_expression;
-    QString m_last;
+    Parser m_parser;
 
 protected:
 
-    void expressionChanged();
+    void updateExpression(QString expression);
 
 public:
 

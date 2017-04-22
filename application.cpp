@@ -18,14 +18,12 @@ Application::Application(int argc, char *argv[])
 
 void Application::onOperationClicked(QString operation)
 {
-    m_last = operation;
-    
-    m_expression += operation;
-    expressionChanged();
+    m_parser.append(operation.toUtf8().constData());
+    updateExpression(QString::fromStdString(m_parser.expression()));
 }
 
-void Application::expressionChanged()
+void Application::updateExpression(QString expression)
 {
     QObject *object = m_engine.rootObjects().value(1);
-    QQmlProperty::write(object, "equation", m_expression);
+    QQmlProperty::write(object, "equation", expression);
 }
