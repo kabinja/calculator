@@ -62,12 +62,16 @@ Window {
 			signal buttonClicked(string operation)
 
 			OperationButton { operation: "%" }
-			OperationButton { operation: "−" }
+			OperationButton { operation: "-" }
 			OperationButton { operation: "+" }
 			OperationButton { operation: "root" }
-			OperationButton { operation: "pow" }
-			OperationButton { operation: "÷" }
-			OperationButton { operation: "×" }
+			OperationButton { operation: "power" }
+			OperationButton { operation: "/" }
+			OperationButton { operation: "*" }
+			OperationButton { operation: "(" }
+			OperationButton { operation: ")" }
+			OperationButton { operation: "," }
+			OperationButton { operation: "AC" }
 			OperationButton { operation: "C" }
 		}
 

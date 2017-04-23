@@ -18,7 +18,15 @@ Application::Application(int argc, char *argv[])
 
 void Application::onOperationClicked(QString operation)
 {
-    m_parser.append(operation.toUtf8().constData());
+    if(operation == "C")
+        m_parser.removeToken();
+    else if(operation == "AC")
+        m_parser.clearExpression();
+    else if(operation == "=")
+        m_parser.evaluate();
+    else
+       m_parser.addToken(operation.toUtf8().constData());
+
     updateExpression(QString::fromStdString(m_parser.expression()));
 }
 
