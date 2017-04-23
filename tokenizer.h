@@ -1,8 +1,6 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 
-#include <vector>
-
 #include "token.h"
 
 class Tokenizer

@@ -1,9 +1,5 @@
 #include "tokenizer.h"
 
-#include <ctype.h>
-#include <functional>
-#include <algorithm>
-
 Tokenizer::Tokenizer()
 {
 

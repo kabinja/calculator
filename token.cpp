@@ -1,7 +1,5 @@
 #include "token.h"
 
-#include <locale>
-
 Token::Token()
     : m_type(Type::Error)
 {

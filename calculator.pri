@@ -7,4 +7,5 @@ SOURCES += application.cpp
 HEADERS += application.h \
     $$PWD/parser.h \
     $$PWD/token.h \
-    $$PWD/tokenizer.h
+    $$PWD/tokenizer.h \
+    $$PWD/includes.h

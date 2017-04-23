@@ -1,10 +1,5 @@
 #include "application.h"
 
-#include <QQuickView>
-#include <QQuickItem>
-#include <QQmlComponent>
-#include <QQmlProperty>
-
 Application::Application(int argc, char *argv[])
     : QGuiApplication(argc, argv)
 {

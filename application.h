@@ -1,10 +1,6 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <string>
-
 #include "parser.h"
 
 class Application : public QGuiApplication
