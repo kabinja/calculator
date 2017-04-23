@@ -5,6 +5,11 @@ Tokenizer::Tokenizer()
 
 }
 
+bool Tokenizer::operator==(const Tokenizer& other) const
+{
+    return m_tokens == other.m_tokens;
+}
+
 std::string Tokenizer::expression() const
 {
     std::string expression;
@@ -17,6 +22,12 @@ std::string Tokenizer::expression() const
 
    return expression;
 }
+
+bool Tokenizer::isEmpty() const
+{
+    return m_tokens.empty();
+}
+
 
 void Tokenizer::append(std::string operation)
 {

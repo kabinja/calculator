@@ -22,11 +22,22 @@ void Application::onOperationClicked(QString operation)
     else
        m_parser.addToken(operation.toUtf8().constData());
 
-    updateExpression(QString::fromStdString(m_parser.expression()));
+    updateExpression();
+    updateAnswer();
 }
 
-void Application::updateExpression(QString expression)
+void Application::updateExpression()
 {
+    QString expression = QString::fromStdString(m_parser.expression());
+
     QObject *object = m_engine.rootObjects().value(1);
     QQmlProperty::write(object, "equation", expression);
+}
+
+void Application::updateAnswer()
+{
+    QString answer = QString::fromStdString(m_parser.answer());
+
+    QObject *object = m_engine.rootObjects().value(1);
+    QQmlProperty::write(object, "answer", answer);
 }

@@ -14,20 +14,31 @@ Window {
 	signal operatorClicked(string operation)
 
 	property alias equation: expressionString.text
+	property alias answer: answerString.text
 
 	Rectangle{
-		id: expression
+		id: expressionRect
 		width: parent.width
 		height: 20
 		color: "white"
 	}
 
-	Text { id: expressionString; anchors.centerIn: expression; color: "black" }
+	Text { id: expressionString; anchors.centerIn: expressionRect; color: "black" }
+
+	Rectangle{
+		id: answerRect
+		width: parent.width
+		height: 20
+		color: "white"
+		anchors.top: expressionRect.bottom
+	}
+
+	Text { id: answerString; anchors.centerIn: answerRect; color: "black" }
 
 	SystemPalette { id: palette }
 
 	Row {
-		anchors.top: expression.bottom
+		anchors.top: answerRect.bottom
 		anchors.topMargin: 5
 		spacing: 20
 

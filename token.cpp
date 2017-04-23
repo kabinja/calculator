@@ -5,6 +5,11 @@ Token::Token()
 {
 }
 
+bool Token::operator==(const Token& other) const
+{
+    return m_type == other.m_type && m_value == other.m_value;
+}
+
 bool Token::isError() const
 {
     return m_type == Type::Error;

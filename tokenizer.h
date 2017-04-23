@@ -12,7 +12,10 @@ protected:
 public:
     Tokenizer();
 
+    bool operator==(const Tokenizer& other) const;
+
     std::string expression() const;
+    bool isEmpty() const;
 
     void append(std::string operation);
     void pop();

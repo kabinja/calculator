@@ -28,6 +28,8 @@ protected:
 public:
     Token();
 
+    bool operator==(const Token& other) const;
+
     bool isError() const;
     bool isDigit() const;
     bool isSameType(const Token& token) const;

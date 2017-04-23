@@ -15,7 +15,8 @@ protected:
 
 protected:
 
-    void updateExpression(QString expression);
+    void updateExpression();
+    void updateAnswer();
 
 public:
 
