@@ -9,6 +9,8 @@ protected:
 
     std::vector<Token> m_tokens;
 
+    std::vector<Token>::const_iterator m_current;
+
 public:
     Tokenizer();
 
@@ -20,6 +22,10 @@ public:
     void append(std::string operation);
     void pop();
     void clear();
+
+    Token peek() const;
+    void next();
+    void reset();
 };
 
 #endif // TOKENIZER_H

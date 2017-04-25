@@ -63,3 +63,24 @@ void Tokenizer::clear()
 {
     m_tokens.clear();
 }
+
+Token Tokenizer::peek() const
+{
+    if(m_current == m_tokens.end())
+        return Token();
+
+    return *m_current;
+}
+
+void Tokenizer::next()
+{
+    if(m_current == m_tokens.end())
+        return;
+
+    ++m_current;
+}
+
+void Tokenizer::reset()
+{
+    m_current = m_tokens.begin();
+}

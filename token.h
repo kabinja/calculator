@@ -30,6 +30,9 @@ public:
 
     bool operator==(const Token& other) const;
 
+    double value() const;
+    Token::Type type() const;
+
     bool isError() const;
     bool isDigit() const;
     bool isSameType(const Token& token) const;

@@ -1,16 +1,24 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include "state.h"
+#include "node.h"
 #include "tokenizer.h"
 
 class Parser
 {
 protected:
 
-    Tokenizer m_current;
-    Tokenizer m_last;
-
+    Tokenizer m_tokens;
     std::string m_answer;
+
+protected:
+
+    Token currentToken() const;
+    void nextToken();
+
+    Node parseExpression(State::Level level = State::Level::level00);
+    Node parseBranch(State::Level precedence = State::Level::level00);
 
 public:
     Parser();
@@ -22,7 +30,7 @@ public:
     void removeToken();
     void clearExpression();
 
-    bool evaluate();
+    void evaluate();
 };
 
 #endif // PARSER_H
