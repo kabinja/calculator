@@ -40,16 +40,7 @@ bool Token::isSameType(const Token& token) const
 
 std::string Token::toString() const
 {
-    std::string s = m_value;
-
-    switch(m_type)
-    {
-    case Type::Power:
-    case Type::Root:
-        s += "(";
-    }
-
-    return s;
+    return m_value;
 }
 
 bool Token::append(const Token& token)
@@ -104,9 +95,9 @@ Token Token::fromString(std::string s)
    else if(s == "%")
        token.m_type = Type::Modulo;
    else if(s == "(")
-       token.m_type = Type::LeftParenthesis;
+       token.m_type = Type::LeftBracket;
    else if(s == ")")
-       token.m_type = Type::RightParenthesis;
+       token.m_type = Type::RightBracket;
 
    token.m_value = s;
 

@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include <functional>
 #include <algorithm>
+#include <cmath>
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>

@@ -17,7 +17,7 @@ bool Node::isValid() const
     return true;
 }
 
-void Node::set(double value)
+void Node::setValue(double value)
 {
     m_value = value;
 }

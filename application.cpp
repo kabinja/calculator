@@ -20,7 +20,12 @@ void Application::onOperationClicked(QString operation)
     else if(operation == "=")
         m_parser.evaluate();
     else
+    {
        m_parser.addToken(operation.toUtf8().constData());
+
+       if(operation == "root" || operation == "power")
+         m_parser.addToken("(");
+    }
 
     updateExpression();
     updateAnswer();

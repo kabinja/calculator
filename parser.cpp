@@ -17,7 +17,7 @@ Node Parser::parseExpression(State::Level level)
 
     if(!expression.isValid())
     {
-        return expression;
+        return Node();
     }
 
     bool breakLoop = false;
@@ -54,7 +54,7 @@ Node Parser::parseExpression(State::Level level)
         rightBranch = parseExpression(currentState.right());
         if(rightBranch.isValid())
         {
-            newExpression.set((currentState.operation())(rightBranch.value(), expression.value()));
+            newExpression.setValue((currentState.operation())(rightBranch.value(), expression.value()));
         }
 
         if(!newExpression.isValid())
@@ -74,13 +74,92 @@ Node Parser::parseBranch(State::Level level)
 {
     Node branch;
 
-    if(Token::Type::Digit == currentToken().type())
-    {
-        branch.set(currentToken().value());
-        nextToken();
+    switch (currentToken().type()) {
+    case Token::Type::Digit:
+      branch.setValue(currentToken().value());
+      nextToken();
+      break;
+
+    case Token::Type::Root:
+    case Token::Type::Power:
+      branch = parseFunction();
+      break;
+
+    default:
+      break;
     }
 
     return branch;
+}
+
+Node Parser::parseFunction()
+{
+  int count = parameterCount();
+
+  std::vector<Node> parameters(count);
+
+  parseFunctionCall(parameters);
+
+  return callFunction(parameters);
+}
+
+void Parser::parseFunctionCall(std::vector<Node>& parameters)
+{
+  nextToken();
+  if(currentToken().type() != Token::Type::LeftBracket)
+  {
+    return;
+  }
+
+  for(auto parameter : parameters)
+  {
+    parameter = parseExpression();
+
+    if(!parameter.isValid())
+    {
+      return;
+    }
+    else if(currentToken().type() == Token::Type::RightBracket)
+    {
+      break;
+    }
+    else if(currentToken().type() == Token::Type::Comma)
+    {
+      continue;
+    }
+  }
+}
+
+Node Parser::callFunction(const std::vector<Node>& parameters)
+{
+  Node function;
+
+  switch (currentToken().type()) {
+  case Token::Type::Root:
+    function.setValue(pow(parameters[0].value(), 1/ parameters[1].value()));
+    break;
+
+  case Token::Type::Power:
+    function.setValue(pow(parameters[0].value(), parameters[1].value()));
+    break;
+  }
+
+  return function;
+}
+
+int Parser::parameterCount() const
+{
+  switch (currentToken().type()) {
+  case Token::Type::Root:
+  case Token::Type::Power:
+    return 2;
+    break;
+
+  default:
+    break;
+  }
+
+  return -1;
 }
 
 Parser::Parser()

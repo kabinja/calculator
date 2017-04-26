@@ -13,11 +13,12 @@ public:
         Substract,
         Multiply,
         Divide,
-        Power,
-        Root,
         Modulo,
-        LeftParenthesis,
-        RightParenthesis,
+        Root,
+        Power,
+        LeftBracket,
+        RightBracket,
+        Comma
     };
 
 protected:

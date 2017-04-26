@@ -20,7 +20,7 @@ public:
     double value() const;
     bool isValid() const;
 
-    void set(double value);
+    void setValue(double value);
 };
 
 #endif // NODE_H
