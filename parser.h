@@ -21,8 +21,10 @@ protected:
     Node parseBranch(State::Level level = State::Level::level00);
     Node parseFunction();
     void parseFunctionCall(std::vector<Node>& parameters);
-		Node callFunction(Token::Type functionType, const std::vector<Node>& paramaters);
-		int parameterCount(Token::Type functionType) const;
+
+    bool updateState(State& state) const;
+    Node callFunction(Token::Type functionType, const std::vector<Node>& paramaters);
+    int parameterCount(Token::Type functionType) const;
 
 public:
     Parser();

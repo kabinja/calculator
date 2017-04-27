@@ -18,7 +18,8 @@ public:
         level07,
         level08,
         level09,
-        level10
+        level10,
+        level11
     };
 
 protected:

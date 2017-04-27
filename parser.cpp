@@ -20,28 +20,16 @@ Node Parser::parseExpression(State::Level level)
         return Node();
     }
 
-    bool breakLoop = false;
-
     State currentState;
 
     for(;;)
     {
-        switch (currentToken().type()) {
-        case Token::Type::Add:
-            currentState.set(State::Level::level07, State::Level::level08,
-                             [](double left, double right) { return left + right;});
-            break;
-
-        default:
-            breakLoop = true;
-            break;
-        }
-
-        if(breakLoop)
+        if(!updateState(currentState))
         {
-            break;
+            return expression;
         }
-        else if(currentState.left() < level)
+
+        if(currentState.left() < level)
         {
             break;
         }
@@ -52,9 +40,10 @@ Node Parser::parseExpression(State::Level level)
         Node newExpression;
 
         rightBranch = parseExpression(currentState.right());
+
         if(rightBranch.isValid())
         {
-            newExpression.setValue((currentState.operation())(rightBranch.value(), expression.value()));
+            newExpression.setValue((currentState.operation())( expression.value(), rightBranch.value()));
         }
 
         if(!newExpression.isValid())
@@ -128,15 +117,58 @@ void Parser::parseFunctionCall(std::vector<Node>& parameters)
     {
       return;
     }
-    else if(currentToken().type() == Token::Type::RightBracket)
-    {
-      break;
-    }
     else if(currentToken().type() == Token::Type::Comma)
     {
       continue;
     }
   }
+}
+
+bool Parser::updateState(State& state) const
+{
+    switch (currentToken().type()) {
+    case Token::Type::Add:
+        state.set(State::Level::level07, State::Level::level08,
+                         [](double left, double right) { return left + right;});
+        break;
+
+    case Token::Type::Substract:
+        state.set(State::Level::level07, State::Level::level08,
+                         [](double left, double right) { return left - right;});
+        break;
+
+    case Token::Type::Multiply:
+        state.set(State::Level::level10, State::Level::level11,
+                         [](double left, double right) { return left * right;});
+        break;
+
+    case Token::Type::Divide:
+        state.set(State::Level::level10, State::Level::level11,
+                         [](double left, double right) { return left / right;});
+        break;
+
+    case Token::Type::Modulo:
+        state.set(State::Level::level10, State::Level::level11,
+                  [](double left, double right)
+        {
+            double intpart;
+            if(std::modf(left, &intpart) != 0.0)
+                return std::nan("1");
+
+            if(std::modf(right, &intpart) != 0.0)
+                return std::nan("1");
+
+            return (double)((long)left % (long)right);
+        });
+
+        break;
+
+    default:
+        return false;
+        break;
+    }
+
+    return true;
 }
 
 Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& parameters)
@@ -145,7 +177,7 @@ Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& par
 
 	switch (functionType) {
   case Token::Type::Root:
-    function.setValue(pow(parameters[0].value(), 1/ parameters[1].value()));
+    function.setValue(pow(parameters[0].value(), 1 / parameters[1].value()));
     break;
 
   case Token::Type::Power:
