@@ -83,6 +83,7 @@ Node Parser::parseBranch(State::Level level)
     case Token::Type::Root:
     case Token::Type::Power:
       branch = parseFunction();
+			nextToken();
       break;
 
     default:
@@ -94,13 +95,19 @@ Node Parser::parseBranch(State::Level level)
 
 Node Parser::parseFunction()
 {
-  int count = parameterCount();
+	Token::Type functionType = currentToken().type();
+	int count = parameterCount(functionType);
 
   std::vector<Node> parameters(count);
 
   parseFunctionCall(parameters);
 
-  return callFunction(parameters);
+	if (currentToken().type() != Token::Type::RightBracket)
+	{
+		return Node();
+	}
+
+	return callFunction(functionType, parameters);
 }
 
 void Parser::parseFunctionCall(std::vector<Node>& parameters)
@@ -111,8 +118,10 @@ void Parser::parseFunctionCall(std::vector<Node>& parameters)
     return;
   }
 
-  for(auto parameter : parameters)
+  for(auto& parameter : parameters)
   {
+		nextToken();
+
     parameter = parseExpression();
 
     if(!parameter.isValid())
@@ -130,11 +139,11 @@ void Parser::parseFunctionCall(std::vector<Node>& parameters)
   }
 }
 
-Node Parser::callFunction(const std::vector<Node>& parameters)
+Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& parameters)
 {
   Node function;
 
-  switch (currentToken().type()) {
+	switch (functionType) {
   case Token::Type::Root:
     function.setValue(pow(parameters[0].value(), 1/ parameters[1].value()));
     break;
@@ -147,9 +156,9 @@ Node Parser::callFunction(const std::vector<Node>& parameters)
   return function;
 }
 
-int Parser::parameterCount() const
+int Parser::parameterCount(Token::Type functionType) const
 {
-  switch (currentToken().type()) {
+	switch (functionType) {
   case Token::Type::Root:
   case Token::Type::Power:
     return 2;

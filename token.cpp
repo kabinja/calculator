@@ -96,8 +96,10 @@ Token Token::fromString(std::string s)
        token.m_type = Type::Modulo;
    else if(s == "(")
        token.m_type = Type::LeftBracket;
-   else if(s == ")")
-       token.m_type = Type::RightBracket;
+	 else if (s == ")")
+		 token.m_type = Type::RightBracket;
+	 else if (s == ",")
+		 token.m_type = Type::Comma;
 
    token.m_value = s;
 
