@@ -119,7 +119,7 @@ bool Parser::parseFunctionCall(std::vector<Node>& parameters)
   nextToken();
   if(currentToken().type() != Token::Type::LeftBracket)
   {
-    return;
+    return false;
   }
 
   for(auto& parameter : parameters)
@@ -245,6 +245,12 @@ void Parser::evaluate(Tokenizer tokens)
   {
     m_tokens.reset();
     Node expression = parseExpression();
+
+		if (!m_tokens.isEnd())
+		{
+			expression = Node();
+		}
+
     m_answer = std::to_string(expression.value());
   }
 }

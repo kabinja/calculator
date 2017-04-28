@@ -28,6 +28,15 @@ bool Tokenizer::isEmpty() const
     return m_tokens.empty();
 }
 
+bool Tokenizer::isEnd() const
+{
+	if (isEmpty())
+	{
+		return true;
+	}
+
+	return m_current == m_tokens.end();
+}
 
 void Tokenizer::append(std::string operation)
 {

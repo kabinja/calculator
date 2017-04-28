@@ -18,6 +18,7 @@ public:
 
     std::string expression() const;
     bool isEmpty() const;
+		bool isEnd() const;
 
     void append(std::string operation);
     void pop();
