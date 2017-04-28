@@ -18,7 +18,7 @@ protected:
     void nextToken();
 
     Node parseExpression(State::Level level = State::Level::level00);
-    Node parseBranch(State::Level level = State::Level::level00);
+    Node parseBranch();
     Node parseFunction();
     bool parseFunctionCall(std::vector<Node>& parameters);
 

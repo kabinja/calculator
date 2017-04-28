@@ -13,7 +13,7 @@ void Parser::nextToken()
 
 Node Parser::parseExpression(State::Level level)
 {
-  Node expression = parseBranch(level);
+  Node expression = parseBranch();
 
   if(!expression.isValid())
   {
@@ -59,7 +59,7 @@ Node Parser::parseExpression(State::Level level)
   return expression;
 }
 
-Node Parser::parseBranch(State::Level level)
+Node Parser::parseBranch()
 {
   Node branch;
 
@@ -145,27 +145,27 @@ bool Parser::updateState(State& state) const
 {
   switch (currentToken().type()) {
   case Token::Type::Add:
-    state.set(State::Level::level07, State::Level::level08,
+    state.set(State::Level::level01, State::Level::level02,
 							[](double left, double right) { return left + right;});
     break;
 
   case Token::Type::Substract:
-    state.set(State::Level::level07, State::Level::level08,
+    state.set(State::Level::level01, State::Level::level02,
 							[](double left, double right) { return left - right;});
     break;
 
   case Token::Type::Multiply:
-    state.set(State::Level::level10, State::Level::level11,
+    state.set(State::Level::level03, State::Level::level04,
 							[](double left, double right) { return left * right;});
     break;
 
   case Token::Type::Divide:
-    state.set(State::Level::level10, State::Level::level11,
+    state.set(State::Level::level03, State::Level::level04,
 							[](double left, double right) { return left / right;});
     break;
 
   case Token::Type::Modulo:
-    state.set(State::Level::level10, State::Level::level11,
+    state.set(State::Level::level03, State::Level::level04,
               [](double left, double right)
   {
     double intpart;
