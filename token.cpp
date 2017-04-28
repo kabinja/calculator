@@ -13,7 +13,7 @@ bool Token::operator==(const Token& other) const
 double Token::value() const
 {
     if(!isDigit())
-        return std::numeric_limits<double>::quiet_NaN();;
+        return std::nan("1");
 
     return ::atof(m_value.c_str());
 }

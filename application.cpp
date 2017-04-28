@@ -13,27 +13,35 @@ Application::Application(int argc, char *argv[])
 
 void Application::onOperationClicked(QString operation)
 {
-    if(operation == "C")
-        m_parser.removeToken();
-    else if(operation == "AC")
-        m_parser.clearExpression();
-    else if(operation == "=")
-        m_parser.evaluate();
-    else
-    {
-       m_parser.addToken(operation.toUtf8().constData());
+	if (operation == "C")
+	{
+		m_tokens.pop();
+	}
+	else if (operation == "AC")
+	{
+		m_tokens.clear();
+		m_parser.clear();
+	}		
+	else if (operation == "=")
+	{
+		m_parser.evaluate(m_tokens);
+	}
+       
+  else
+  {
+		m_tokens.append(operation.toUtf8().constData());
 
-       if(operation == "root" || operation == "power")
-         m_parser.addToken("(");
-    }
+      if(operation == "root" || operation == "power")
+				m_tokens.append("(");
+  }
 
-    updateExpression();
-    updateAnswer();
+  updateExpression();
+  updateAnswer();
 }
 
 void Application::updateExpression()
 {
-    QString expression = QString::fromStdString(m_parser.expression());
+    QString expression = QString::fromStdString(m_tokens.expression());
 
     QObject *object = m_engine.rootObjects().value(1);
     QQmlProperty::write(object, "equation", expression);

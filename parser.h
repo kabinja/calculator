@@ -20,7 +20,7 @@ protected:
     Node parseExpression(State::Level level = State::Level::level00);
     Node parseBranch(State::Level level = State::Level::level00);
     Node parseFunction();
-    void parseFunctionCall(std::vector<Node>& parameters);
+    bool parseFunctionCall(std::vector<Node>& parameters);
 
     bool updateState(State& state) const;
     Node callFunction(Token::Type functionType, const std::vector<Node>& paramaters);
@@ -29,14 +29,10 @@ protected:
 public:
     Parser();
 
-    std::string expression() const;
     std::string answer() const;
 
-    void addToken(std::string s);
-    void removeToken();
-    void clearExpression();
-
-    void evaluate();
+		void evaluate(Tokenizer tokens);
+		void clear();
 };
 
 #endif // PARSER_H

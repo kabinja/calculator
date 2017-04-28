@@ -3,83 +3,95 @@
 
 Token Parser::currentToken() const
 {
-    return m_tokens.peek();
+	return m_tokens.peek();
 }
 
 void Parser::nextToken()
 {
-    m_tokens.next();
+	m_tokens.next();
 }
 
 Node Parser::parseExpression(State::Level level)
 {
-    Node expression = parseBranch(level);
+  Node expression = parseBranch(level);
 
-    if(!expression.isValid())
-    {
-        return Node();
-    }
+  if(!expression.isValid())
+  {
+      return Node();
+  }
 
-    State currentState;
+  State currentState;
 
-    for(;;)
-    {
-        if(!updateState(currentState))
-        {
-            return expression;
-        }
+  for(;;)
+  {
+		if(!updateState(currentState))
+		{
+			return expression;
+		}
 
-        if(currentState.left() < level)
-        {
-            break;
-        }
+		if(currentState.left() < level)
+		{
+			break;
+		}
 
-        nextToken();
+		nextToken();
 
-        Node rightBranch;
-        Node newExpression;
+		Node rightBranch;
+		Node newExpression;
 
-        rightBranch = parseExpression(currentState.right());
+		rightBranch = parseExpression(currentState.right());
 
-        if(rightBranch.isValid())
-        {
-            newExpression.setValue((currentState.operation())( expression.value(), rightBranch.value()));
-        }
+		if(rightBranch.isValid())
+		{
+			newExpression.setValue((currentState.operation())( expression.value(), rightBranch.value()));
+		}
 
-        if(!newExpression.isValid())
-        {
-            return Node();
-        }
-        else
-        {
-            expression = newExpression;
-        }
-    }
+		if(!newExpression.isValid())
+		{
+			return Node();
+		}
+		else
+		{
+			expression = newExpression;
+		}
+  }
 
-    return expression;
+  return expression;
 }
 
 Node Parser::parseBranch(State::Level level)
 {
-    Node branch;
+  Node branch;
 
-    switch (currentToken().type()) {
-    case Token::Type::Digit:
-      branch.setValue(currentToken().value());
-      nextToken();
-      break;
+  switch (currentToken().type()) {
+  case Token::Type::Digit:
+    branch.setValue(currentToken().value());
+    nextToken();
+    break;
 
-    case Token::Type::Root:
-    case Token::Type::Power:
-      branch = parseFunction();
-			nextToken();
-      break;
+  case Token::Type::Root:
+  case Token::Type::Power:
+    branch = parseFunction();
+		nextToken();
+    break;
 
-    default:
-      break;
-    }
+	case Token::Type::LeftBracket:
+		nextToken();
+		branch = parseExpression();
 
-    return branch;
+		if (currentToken().type() != Token::Type::RightBracket)
+		{
+			return Node();
+		}
+
+		nextToken();
+		break;
+
+  default:
+    break;
+  }
+
+  return branch;
 }
 
 Node Parser::parseFunction()
@@ -89,7 +101,10 @@ Node Parser::parseFunction()
 
   std::vector<Node> parameters(count);
 
-  parseFunctionCall(parameters);
+	if (parseFunctionCall(parameters))
+	{
+		return Node();
+	}
 
 	if (currentToken().type() != Token::Type::RightBracket)
 	{
@@ -99,7 +114,7 @@ Node Parser::parseFunction()
 	return callFunction(functionType, parameters);
 }
 
-void Parser::parseFunctionCall(std::vector<Node>& parameters)
+bool Parser::parseFunctionCall(std::vector<Node>& parameters)
 {
   nextToken();
   if(currentToken().type() != Token::Type::LeftBracket)
@@ -115,60 +130,62 @@ void Parser::parseFunctionCall(std::vector<Node>& parameters)
 
     if(!parameter.isValid())
     {
-      return;
+      return false;
     }
     else if(currentToken().type() == Token::Type::Comma)
     {
       continue;
     }
   }
+
+	return true;
 }
 
 bool Parser::updateState(State& state) const
 {
-    switch (currentToken().type()) {
-    case Token::Type::Add:
-        state.set(State::Level::level07, State::Level::level08,
-                         [](double left, double right) { return left + right;});
-        break;
+  switch (currentToken().type()) {
+  case Token::Type::Add:
+    state.set(State::Level::level07, State::Level::level08,
+							[](double left, double right) { return left + right;});
+    break;
 
-    case Token::Type::Substract:
-        state.set(State::Level::level07, State::Level::level08,
-                         [](double left, double right) { return left - right;});
-        break;
+  case Token::Type::Substract:
+    state.set(State::Level::level07, State::Level::level08,
+							[](double left, double right) { return left - right;});
+    break;
 
-    case Token::Type::Multiply:
-        state.set(State::Level::level10, State::Level::level11,
-                         [](double left, double right) { return left * right;});
-        break;
+  case Token::Type::Multiply:
+    state.set(State::Level::level10, State::Level::level11,
+							[](double left, double right) { return left * right;});
+    break;
 
-    case Token::Type::Divide:
-        state.set(State::Level::level10, State::Level::level11,
-                         [](double left, double right) { return left / right;});
-        break;
+  case Token::Type::Divide:
+    state.set(State::Level::level10, State::Level::level11,
+							[](double left, double right) { return left / right;});
+    break;
 
-    case Token::Type::Modulo:
-        state.set(State::Level::level10, State::Level::level11,
-                  [](double left, double right)
-        {
-            double intpart;
-            if(std::modf(left, &intpart) != 0.0)
-                return std::nan("1");
+  case Token::Type::Modulo:
+    state.set(State::Level::level10, State::Level::level11,
+              [](double left, double right)
+  {
+    double intpart;
+    if(std::modf(left, &intpart) != 0.0)
+      return std::nan("1");
 
-            if(std::modf(right, &intpart) != 0.0)
-                return std::nan("1");
+    if(std::modf(right, &intpart) != 0.0)
+      return std::nan("1");
 
-            return (double)((long)left % (long)right);
-        });
+    return (double)((long)left % (long)right);
+  });
 
-        break;
+  break;
 
-    default:
-        return false;
-        break;
-    }
+  default:
+    return false;
+    break;
+  }
 
-    return true;
+  return true;
 }
 
 Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& parameters)
@@ -208,43 +225,32 @@ Parser::Parser()
 
 }
 
-std::string Parser::expression() const
-{
-    return m_tokens.expression();
-}
-
 std::string Parser::answer() const
 {
-    return m_answer;
+	return m_answer;
 }
 
-void Parser::addToken(std::string s)
+void Parser::evaluate(Tokenizer tokens)
 {
-    m_tokens.append(s);
+	if (tokens == m_tokens)
+		return;
+
+	m_tokens = tokens;
+
+  if(m_tokens.isEmpty())
+  {
+      m_answer.clear();
+  }
+  else
+  {
+    m_tokens.reset();
+    Node expression = parseExpression();
+    m_answer = std::to_string(expression.value());
+  }
 }
 
-void Parser::removeToken()
+void Parser::clear()
 {
-    m_tokens.pop();
+	m_tokens.clear();
+	m_answer.clear();
 }
-
-void Parser::clearExpression()
-{
-    m_tokens.clear();
-}
-
-void Parser::evaluate()
-{
-    if(m_tokens.isEmpty())
-    {
-        m_answer.clear();
-    }
-    else
-    {
-        m_tokens.reset();
-        Node expression = parseExpression();
-        m_answer = std::to_string(expression.value());
-    }
-}
-
-

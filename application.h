@@ -11,6 +11,7 @@ protected:
 
     QQmlApplicationEngine m_engine;
     
+		Tokenizer m_tokens;
     Parser m_parser;
 
 protected:
