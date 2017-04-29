@@ -2,6 +2,7 @@
 #define INCLUDES_H
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <locale>
 #include <ctype.h>

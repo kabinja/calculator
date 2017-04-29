@@ -10,3 +10,5 @@ includes.h.cpp
 *.bat
 debug/*
 ipch/*
+GeneratedFiles/*
+x64/*
