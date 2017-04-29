@@ -2,9 +2,9 @@ QT += qml quick
 
 CONFIG += c++11
 
-RESOURCES += qml.qrc
+RESOURCES += resources/qml.qrc
 
-PRECOMPILED_HEADER = includes.h
+PRECOMPILED_HEADER = src/includes.h
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
