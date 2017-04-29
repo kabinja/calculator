@@ -12,3 +12,4 @@ debug/*
 ipch/*
 GeneratedFiles/*
 x64/*
+build-test-Desktop-Debug/*

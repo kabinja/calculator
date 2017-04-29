@@ -52,12 +52,12 @@ bool Tokenizer::tokenize(const std::string& s)
 {
     std::locale loc;
 
-    bool alpha = false, error = false;
+    bool alpha = false, valid = true;
     std::string operation;
 
     for(auto c : s)
     {
-		if(error)
+        if(!valid)
 		{
 			break;
 		}
@@ -66,7 +66,7 @@ bool Tokenizer::tokenize(const std::string& s)
 		{
 			if(!operation.empty())
 			{
-				append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
@@ -76,7 +76,7 @@ bool Tokenizer::tokenize(const std::string& s)
 		{
 			if(!alpha && !operation.empty())
 			{
-				error |= append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
@@ -92,24 +92,24 @@ bool Tokenizer::tokenize(const std::string& s)
 			else
 			{
 				operation.empty();
-				error |= append(s);
+                valid |= append(charToString(c));
 			}
 		}
 		else
 		{
 			if(!operation.empty())
 			{
-				error |= append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
 			alpha = false;
 
-			error |= append(charToString(c));
+            valid |= append(charToString(c));
 		}
 	}
 
-	return !error;
+    return valid;
 }
 
 bool Tokenizer::append(std::string operation)
