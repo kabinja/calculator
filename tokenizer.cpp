@@ -50,17 +50,19 @@ bool Tokenizer::isEnd() const
 
 bool Tokenizer::tokenize(const std::string& s)
 {
-	bool alpha = false, error = false;
-  std::string operation;
+    std::locale loc;
 
-  for(auto c : s)
-  {
+    bool alpha = false, error = false;
+    std::string operation;
+
+    for(auto c : s)
+    {
 		if(error)
 		{
 			break;
 		}
 
-		if(std::isspace(c))
+        if(std::isspace(c, loc))
 		{
 			if(!operation.empty())
 			{
@@ -70,7 +72,7 @@ bool Tokenizer::tokenize(const std::string& s)
 
 			alpha = false;
 		}
-		else if(std::isalpha(c))
+        else if(std::isalpha(c, loc))
 		{
 			if(!alpha && !operation.empty())
 			{
@@ -81,7 +83,7 @@ bool Tokenizer::tokenize(const std::string& s)
 			alpha = true;
 			operation += c;
 		}
-		else if(std::isdigit(c))
+        else if(std::isdigit(c, loc))
 		{
 			if(alpha)
 			{
