@@ -11,6 +11,10 @@ protected:
 
     std::vector<Token>::const_iterator m_current;
 
+protected:
+
+		std::string charToString(char c) const;
+
 public:
     Tokenizer();
 
@@ -20,7 +24,8 @@ public:
     bool isEmpty() const;
 		bool isEnd() const;
 
-    void append(std::string operation);
+		bool tokenize(const std::string& s);
+		bool append(std::string operation);
     void pop();
     void clear();
 

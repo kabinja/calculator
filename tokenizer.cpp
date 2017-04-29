@@ -1,5 +1,15 @@
 #include "tokenizer.h"
 
+std::string Tokenizer::charToString(char c) const
+{
+	std::stringstream ss;
+	std::string s;
+	ss << c;
+	ss >> s;
+
+	return s;
+}
+
 Tokenizer::Tokenizer()
 {
 
@@ -38,23 +48,87 @@ bool Tokenizer::isEnd() const
 	return m_current == m_tokens.end();
 }
 
-void Tokenizer::append(std::string operation)
+bool Tokenizer::tokenize(const std::string& s)
+{
+	bool alpha = false, error = false;
+  std::string operation;
+
+  for(auto c : s)
+  {
+		if(error)
+		{
+			break;
+		}
+
+		if(std::isspace(c))
+		{
+			if(!operation.empty())
+			{
+				append(operation);
+				operation.clear();
+			}
+
+			alpha = false;
+		}
+		else if(std::isalpha(c))
+		{
+			if(!alpha && !operation.empty())
+			{
+				error |= append(operation);
+				operation.clear();
+			}
+
+			alpha = true;
+			operation += c;
+		}
+		else if(std::isdigit(c))
+		{
+			if(alpha)
+			{
+				operation += c;
+			}
+			else
+			{
+				operation.empty();
+				error |= append(s);
+			}
+		}
+		else
+		{
+			if(!operation.empty())
+			{
+				error |= append(operation);
+				operation.clear();
+			}
+
+			alpha = false;
+
+			error |= append(charToString(c));
+		}
+	}
+
+	return !error;
+}
+
+bool Tokenizer::append(std::string operation)
 {
     Token token = Token::fromString(operation);
 
     if(token.isError())
-        return;
+				return false;
 
     if(!m_tokens.empty())
     {
         if(m_tokens.back().append(token))
-            return;
+						return true;
 
         if(token.isDigit() && m_tokens.back().isDigit())
-            return;
+						return false;
     }
 
    m_tokens.push_back(token);
+
+	 return true;
 }
 
 void Tokenizer::pop()

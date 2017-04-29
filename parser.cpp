@@ -200,6 +200,9 @@ Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& par
   case Token::Type::Power:
     function.setValue(pow(parameters[0].value(), parameters[1].value()));
     break;
+
+	default:
+		break;
   }
 
   return function;
