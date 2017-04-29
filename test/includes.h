@@ -10,6 +10,7 @@
 #include <functional>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "../src/parser.h"
 #include "../src/tokenizer.h"
