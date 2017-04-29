@@ -34,4 +34,4 @@ This project is licensed under the MIT License - see the [license.md](license.md
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used
-* Thedore Norvel for his excellent [artical](http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm) on parsing expression by recursive descent
+* Thedore Norvel for his excellent [article](http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm) on parsing expression by recursive descent
