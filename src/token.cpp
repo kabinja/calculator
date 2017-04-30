@@ -88,8 +88,8 @@ Token Token::fromString(std::string s)
        token.m_type = Type::Divide;
    else if(s == "*")
        token.m_type = Type::Multiply;
-   else if(s == "root")
-       token.m_type = Type::Root;
+	 else if(s == "sqrt")
+			 token.m_type = Type::Sqrt;
    else if(s == "power")
        token.m_type = Type::Power;
    else if(s == "%")

@@ -31,7 +31,7 @@ void Application::onOperationClicked(QString operation)
   {
 		m_tokens.append(operation.toUtf8().constData());
 
-      if(operation == "root" || operation == "power")
+			if(operation == "root" || operation == "sqrt")
 				m_tokens.append("(");
   }
 

@@ -14,7 +14,7 @@ public:
         Multiply,
         Divide,
         Modulo,
-        Root,
+				Sqrt,
         Power,
         LeftBracket,
         RightBracket,

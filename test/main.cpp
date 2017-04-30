@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     test(tokens, parser, "5 * 2", 10);
     test(tokens, parser, "5 % 2", 1);
     test(tokens, parser, "power(5,2)", 25);
-    test(tokens, parser, "root(8,3)", 2);
+		test(tokens, parser, "sqrt(25)", 5);
     test(tokens, parser, "-5", -5);
     test(tokens, parser, "5 + 4 / 2", 7);
     test(tokens, parser, "(5 + 4) / 2", 4.5);
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     test(tokens, parser, "((((5))))+(((((6)))))", 11);
     test(tokens, parser, "5+-5", 0);
     test(tokens, parser, "power(5)", std::nan("1"));
-    test(tokens, parser, "root(5)", std::nan("1"));
+		test(tokens, parser, "sqrt(25,2)", std::nan("1"));
     test(tokens, parser, "5++5", std::nan("1"));
     test(tokens, parser, "5-+5", std::nan("1"));
     test(tokens, parser, "5-/5", std::nan("1"));

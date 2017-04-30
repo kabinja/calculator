@@ -28,8 +28,8 @@ Window {
     anchors.fill: expressionRect
     color: "black"
     horizontalAlignment: Text.AlignRight
-    anchors.rightMargin: 2
-    anchors.left: 2
+    anchors.rightMargin: 5
+    anchors.leftMargin: 5
   }
 
 	Rectangle{
@@ -82,7 +82,7 @@ Window {
 			OperationButton { operation: "%" }
 			OperationButton { operation: "-" }
 			OperationButton { operation: "+" }
-			OperationButton { operation: "root" }
+      OperationButton { operation: "sqrt" }
 			OperationButton { operation: "power" }
 			OperationButton { operation: "/" }
 			OperationButton { operation: "*" }

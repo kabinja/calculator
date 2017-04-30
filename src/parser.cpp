@@ -69,7 +69,7 @@ Node Parser::parseBranch()
     nextToken();
     break;
 
-  case Token::Type::Root:
+	case Token::Type::Sqrt:
   case Token::Type::Power:
     branch = parseFunction();
     nextToken();
@@ -198,8 +198,8 @@ Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& par
   Node function;
 
 	switch (functionType) {
-  case Token::Type::Root:
-    function.setValue(pow(parameters[0].value(), 1 / parameters[1].value()));
+	case Token::Type::Sqrt:
+		function.setValue(sqrt(parameters[0].value()));
     break;
 
   case Token::Type::Power:
@@ -216,10 +216,11 @@ Node Parser::callFunction(Token::Type functionType, const std::vector<Node>& par
 int Parser::parameterCount(Token::Type functionType) const
 {
 	switch (functionType) {
-  case Token::Type::Root:
+	case Token::Type::Sqrt:
+		return 1;
+
   case Token::Type::Power:
     return 2;
-    break;
 
   default:
     break;
