@@ -7,7 +7,7 @@ import "qrc:/"
 Window {
 	id: main
 	width: 300
-	height: 480
+  height: 200
 	color: palette.window
 	visible: true
 
@@ -23,7 +23,14 @@ Window {
 		color: "white"
 	}
 
-	Text { id: expressionString; anchors.centerIn: expressionRect; color: "black" }
+  Text {
+    id: expressionString
+    anchors.fill: expressionRect
+    color: "black"
+    horizontalAlignment: Text.AlignRight
+    anchors.rightMargin: 2
+    anchors.left: 2
+  }
 
 	Rectangle{
 		id: answerRect
