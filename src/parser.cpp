@@ -72,20 +72,25 @@ Node Parser::parseBranch()
   case Token::Type::Root:
   case Token::Type::Power:
     branch = parseFunction();
-		nextToken();
+    nextToken();
     break;
 
 	case Token::Type::LeftBracket:
-		nextToken();
-		branch = parseExpression();
+    nextToken();
+    branch = parseExpression();
 
-		if (currentToken().type() != Token::Type::RightBracket)
-		{
-			return Node();
-		}
+    if (currentToken().type() != Token::Type::RightBracket)
+    {
+        return Node();
+    }
 
-		nextToken();
-		break;
+    nextToken();
+    break;
+
+  case Token::Type::Substract:
+    nextToken();
+    branch.setValue(- parseExpression(State::Level::level04).value());
+    break;
 
   default:
     break;
@@ -101,7 +106,7 @@ Node Parser::parseFunction()
 
   std::vector<Node> parameters(count);
 
-	if (parseFunctionCall(parameters))
+    if (!parseFunctionCall(parameters))
 	{
 		return Node();
 	}

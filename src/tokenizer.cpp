@@ -50,38 +50,40 @@ bool Tokenizer::isEnd() const
 
 bool Tokenizer::tokenize(const std::string& s)
 {
-	bool alpha = false, error = false;
-  std::string operation;
+    std::locale loc;
 
-  for(auto c : s)
-  {
-		if(error)
+    bool alpha = false, valid = true;
+    std::string operation;
+
+    for(auto c : s)
+    {
+        if(!valid)
 		{
 			break;
 		}
 
-		if(std::isspace(c))
+        if(std::isspace(c, loc))
 		{
 			if(!operation.empty())
 			{
-				append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
 			alpha = false;
 		}
-		else if(std::isalpha(c))
+        else if(std::isalpha(c, loc))
 		{
 			if(!alpha && !operation.empty())
 			{
-				error |= append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
 			alpha = true;
 			operation += c;
 		}
-		else if(std::isdigit(c))
+        else if(std::isdigit(c, loc))
 		{
 			if(alpha)
 			{
@@ -90,24 +92,24 @@ bool Tokenizer::tokenize(const std::string& s)
 			else
 			{
 				operation.empty();
-				error |= append(s);
+                valid |= append(charToString(c));
 			}
 		}
 		else
 		{
 			if(!operation.empty())
 			{
-				error |= append(operation);
+                valid |= append(operation);
 				operation.clear();
 			}
 
 			alpha = false;
 
-			error |= append(charToString(c));
+            valid |= append(charToString(c));
 		}
 	}
 
-	return !error;
+    return valid;
 }
 
 bool Tokenizer::append(std::string operation)

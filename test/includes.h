@@ -1,6 +1,7 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+#include <iostream>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -9,12 +10,9 @@
 #include <functional>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQuickView>
-#include <QQuickItem>
-#include <QQmlComponent>
-#include <QQmlProperty>
+#include "../src/parser.h"
+#include "../src/tokenizer.h"
 
 #endif // INCLUDES_H
