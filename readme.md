@@ -10,8 +10,8 @@ E --> E "+" E
     | E "*" E
     | E "/" E
     | E "%" E
-    | "power(" E ")"
-    | "root(" E ")"
+    | "power(" E "," E ")"
+    | "sqrt(" E ")"
     | "(" E ")"
     | v
 
